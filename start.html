@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dane's starter kit</title>
+<meta name="description" content="Three small files, one card and a 20-minute pre-flight that make Dane's Claude Code sessions simple, infrastructure-first and research-backed.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231B1A17'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Helvetica,Arial,sans-serif' font-size='18' font-weight='700' fill='%23F6F2EC'%3EG%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Pontano+Sans:wght@300..700&display=swap">
+<style>
+/* Same paper and type as the front page; this one is a working document with copyable blocks. */
+:root {
+  --paper: #F6F2EC; --paper-deep: #EFE9DF; --ink: #1B1A17; --ink-soft: #4C4842;
+  --taupe: #796F59; --line: #D9D1C2; --accent: #6E2B2B; --tape: #5F6B4E;
+  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body: "Pontano Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+a { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--accent); }
+.wrap { max-width: 860px; margin: 0 auto; }
+.bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 22px 18px; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; }
+.bar a { text-decoration: none; }
+.bar .right a { text-decoration: underline; text-underline-offset: 4px; }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
+.eyebrow { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--taupe); font-weight: 600; margin: 0 0 22px; }
+h1 { font-family: var(--display); font-variation-settings: "opsz" 96; font-weight: 500; font-size: clamp(2.2rem, 5.5vw, 3.8rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 24px; max-width: 20ch; }
+h1 em { font-style: normal; color: var(--accent); }
+.lede { font-size: clamp(1.05rem, 1.5vw, 1.2rem); color: var(--ink-soft); margin: 0; max-width: 60ch; }
+.lede strong { color: var(--ink); font-weight: 600; }
+header { padding-block: 60px 44px; }
+section { padding-block: 48px; }
+h2 { font-family: var(--display); font-variation-settings: "opsz" 60; font-weight: 500; font-size: clamp(1.5rem, 3vw, 2.1rem); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 8px; }
+.where { font-family: var(--mono); font-size: 12.5px; color: var(--taupe); margin: 0 0 18px; letter-spacing: 0.02em; }
+.why { font-size: 15.5px; color: var(--ink-soft); margin: 0 0 18px; max-width: 64ch; }
+.tape { display: inline-block; background: var(--tape); color: var(--paper); font-size: 11.5px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; padding: 7px 14px 6px; transform: rotate(-1.4deg); margin-bottom: 18px; }
+.tape.maroon { background: var(--accent); transform: rotate(1.1deg); }
+.block { position: relative; border: 1px solid var(--line); background: var(--paper-deep); }
+.block pre { margin: 0; padding: 22px 20px 20px; font-family: var(--mono); font-size: 13px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink); }
+.block .copy { position: absolute; top: 10px; right: 10px; font-family: var(--body); font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; background: var(--ink); color: var(--paper); border: 0; padding: 8px 12px 7px; cursor: pointer; }
+.block .copy:hover { background: var(--accent); }
+.block .copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+ol, ul { padding-left: 1.2em; margin: 0; }
+li { margin: 0 0 10px; }
+li:last-child { margin-bottom: 0; }
+.card { border: 1px solid var(--ink); padding: 26px 24px; max-width: 620px; }
+.card h3 { font-family: var(--display); font-variation-settings: "opsz" 24; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; margin: 0 0 10px; }
+.card p, .card li { font-size: 15.5px; }
+.card code, p code, li code { font-family: var(--mono); font-size: 0.92em; background: var(--paper-deep); padding: 1px 5px; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px 40px; }
+footer { background: var(--taupe); color: var(--paper); margin-top: 40px; margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px))); }
+footer .inner { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px; }
+footer p { margin: 0; font-size: 13px; max-width: 64ch; }
+footer a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (max-width: 600px) { header { padding-block: 40px 32px; } section { padding-block: 36px; } .block .copy { position: static; display: inline-block; margin: 12px 0 0 16px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="bar" aria-label="Top">
+    <a href="./">Gretta</a>
+    <div class="right"><a href="#files">The files</a>&nbsp;&nbsp;&nbsp;<a href="#card">Dane's card</a>&nbsp;&nbsp;&nbsp;<a href="#preflight">Pre-flight</a></div>
+  </nav>
+  <hr class="rule">
+
+  <header>
+    <p class="eyebrow">Dane's starter kit · reviewed by a council of eleven · November 9, 2026</p>
+    <h1>Three small files, one card, <em>and no prompt to paste.</em></h1>
+    <p class="lede">TJ installs the files in your home-base folder before your first session. You open Terminal, type two short things, and say one line. <strong>Claude reads the files and takes it from there: one question at a time, infrastructure first, nothing fancy until the plain version works.</strong></p>
+  </header>
+  <hr class="rule">
+
+  <section id="files">
+    <span class="tape">For TJ to install</span>
+    <h2>File 1 of 3</h2>
+    <p class="where">~/Dane/CLAUDE.md</p>
+    <p class="why">The rules every session follows. Claude reads it automatically when it starts in this folder.</p>
+    <div class="block"><button class="copy" data-copy="f1">Copy</button><pre id="f1"># How to work with Dane
+
+Dane runs a brand design studio with his wife and is new to terminals, servers and code. He is learning on purpose. This folder is his home base. Read notes/levels.md for the road map and the latest file in notes/journal/ for where we are.
+
+## Start of every session
+Read the newest notes/journal entry and tell Dane where we left off in two sentences, then ask one question. If there is no entry for today's or the last session, say so and ask him what happened.
+
+## Voice
+Plain English. One question at a time, never a list. If a sensible default exists, pick it and say what you picked. Short answers: say what we are doing, do it, show the result. Define each new term in half a sentence the first time and add it to notes/glossary.md. If Dane says "wait", stop and explain where we are.
+
+## Ask first, in one sentence, before anything that
+costs money, deletes anything, creates or changes a password or key, installs software, or sends anything off this computer (pushes, uploads, emails, API calls to outside services).
+
+## Errors
+One plain sentence on what broke, then fix it or name the one thing you need from Dane. Never paste an error log at him. If stuck twice on the same thing, write notes/ask-tj.md (what we tried, the exact next question) and tell Dane to send TJ that file.
+
+## Levels (finish one before starting the next)
+Level 0 foundation, Level 1 Home Assistant, Level 2 one studio chore automated (the one Dane named in session one; Premiere is a candidate, see levels.md for its limits), Level 3 MCP connections. New ideas go to notes/future-ideas.md with one line of why; bring Dane back to the current level gently, every time.
+
+## Every project (when there is more than one)
+projects/&lt;name&gt;/ with README.md (three sentences), its own CLAUDE.md (under 40 lines), .gitignore, Git from the first file. Before building anything, spend two minutes finding whether a maintained tool already exists (GitHub, official docs), show the best one or two with links, recommend one.
+
+## Secrets
+Never in chat, never in a file Git tracks. Passwords live in Dane's Bitwarden app. Keys scripts need live in the Mac Keychain; Dane saves them himself, in a second Terminal tab, with click-by-click steps from you. Never print a secret's value; show its length or first four characters only. If you see a secret in a tracked file, stop and say so.
+
+## Notes you maintain
+notes/journal/YYYY-MM-DD.md: what we did, decided and why, learned, next. Write it after every meaningful change, not only at the end. notes/glossary.md, notes/future-ideas.md, notes/setup.md (what is installed and where). inbox/: anything Dane drops there, you file, name to his convention, and log where it went.
+
+## Verify, then show
+Nothing is done until Dane has seen it work. Say what you verified and what you assumed. Commit at the end of every session with a plain-English message.</pre></div>
+  </section>
+  <hr class="rule">
+
+  <section>
+    <h2>File 2 of 3</h2>
+    <p class="where">~/Dane/notes/levels.md</p>
+    <p class="why">The road map with the specific calls, so Claude never has to guess and Dane can read the whole road if he wants to.</p>
+    <div class="block"><button class="copy" data-copy="f2">Copy</button><pre id="f2"># The road map (for Claude; Dane, skim if curious)
+
+## Level 0: foundation (one session, about an hour)
+Done when: Dane can quit, reopen Claude, say hi, and Claude tells him where things are without being told.
+- Folders: ~/Dane/{CLAUDE.md, README.md, notes/{journal/, glossary.md, future-ideas.md, setup.md}, projects/, inbox/}.
+- Git: `git init` here, a .gitignore, a first commit. No GitHub yet.
+- Session one questions, one at a time: which Mac this is and whether it stays on; whether he owns any smart-home gear and the one device he wants to control first; whether Bitwarden is installed and signed in; and the one studio chore he repeats most (record the answer in future-ideas.md as the Level 2 candidate, do not start it).
+- Finale: write the journal, then have Dane type /clear and say hi. Claude reads the journal and says where we left off. That is the test.
+- Bonus ending: the Home Assistant Green in his cart with one line in the journal on why.
+
+## Level 1: Home Assistant (a few sessions)
+Done when: one device Dane uses daily turns on and off from Home Assistant, and Claude can read its state.
+- Hardware: Home Assistant Green ($199, plug in and go). Add the Connect ZBT-2 stick only if he has Zigbee or Thread devices. Raspberry Pi 4/5 with Home Assistant OS is the cheaper DIY route. Home Assistant OS in a VM on the Mac is the official Mac path, but the docs steer beginners to dedicated hardware. Do not buy a Yellow (production ended October 2025). HA Container exists but is not for beginners.
+- Follow home-assistant.io/getting-started in the browser: install, onboarding, first device, first automation. Claude guides, Dane clicks.
+- Hook Claude in: Profile &gt; Security &gt; Create a long-lived access token. Dane saves it in Keychain himself in a second Terminal tab (Cmd+T): `security add-generic-password -U -a dane -s home-assistant-token -w` then paste when asked; nothing shows while typing, that is normal. Scripts read it with `security find-generic-password -a dane -s home-assistant-token -w` and call the REST API (`GET /api/states`, `POST /api/services/light/turn_on`). Claude never prints the value.
+- Also at Level 1, once the box exists: GitHub account with two-factor and `gh auth login` (TJ's pre-flight), a private repo for ~/Dane, Tailscale standalone app with auto-login so the Mac is reachable from his phone, System Settings &gt; Energy &gt; prevent sleep when the display is off.
+
+## Level 2: one studio chore, end to end
+Done when: the chore Dane named has run for real three times.
+- Honest scope for Premiere: there is no headless mode and Claude cannot drive the timeline on its own. What works today: UXP panels built with Claude's help (sequences, markers, metadata, project items), the Frame.io API for review and asset chores, folder and naming automations around project files, and Adobe's own AI features inside the app.
+- Likely better first chores for a brand studio: export packs from one master file, color and type tokens to the formats clients need, deliverable folder naming and packaging, proxy and ingest routines. Pick the one Dane named.
+
+## Level 3: connections (MCP)
+An MCP server is a small adapter that lets Claude safely use an outside tool through a standard plug.
+- Add one per session, check each with /mcp:
+  - Filesystem: `claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem ~/Dane`
+  - GitHub: the GitHub-hosted server at https://api.githubcopilot.com/mcp/ (OAuth)
+  - Home Assistant: turn on the built-in Model Context Protocol Server integration; Claude Code needs the HTTPS, remotely reachable URL (Nabu Casa Cloud is the simple way); then `claude mcp add --transport http home-assistant &lt;url&gt;` and `claude mcp login home-assistant`
+  - Browser: `claude mcp add playwright -- npx -y @playwright/mcp@latest`
+- Keys stay out of .mcp.json by using ${VAR} placeholders. Bitwarden Secrets Manager (bws) is the upgrade when there are more than a handful of keys.
+
+## Always
+- Plan mode for anything bigger than a one-line change: press Shift+Tab until the bar says plan mode. /clear when the topic changes. If Claude says a usage limit was reached, that is normal, not broken; come back in a few hours.</pre></div>
+  </section>
+  <hr class="rule">
+
+  <section>
+    <h2>File 3 of 3</h2>
+    <p class="where">~/Dane/.claude/settings.json</p>
+    <p class="why">CLAUDE.md is advice. This file is a lock: these commands always stop and ask Dane first, whatever mode the session is in. Tell Dane never to tap "Yes, don't ask again."</p>
+    <div class="block"><button class="copy" data-copy="f3">Copy</button><pre id="f3">{
+  "permissions": {
+    "ask": [
+      "Bash(rm -rf:*)",
+      "Bash(rm -r:*)",
+      "Bash(sudo:*)",
+      "Bash(git push:*)",
+      "Bash(security find-generic-password:*)",
+      "Bash(npx:*)",
+      "Bash(brew install:*)",
+      "Bash(curl:*)"
+    ]
+  }
+}</pre></div>
+  </section>
+  <hr class="rule">
+
+  <section id="card">
+    <span class="tape maroon">For Dane</span>
+    <h2>The card</h2>
+    <p class="why">Print it, or keep it on your phone. This is everything you need to know to start a session.</p>
+    <div class="card">
+      <h3>Starting a session</h3>
+      <ol>
+        <li>Open Terminal: Cmd+Space, type <code>Terminal</code>, Return.</li>
+        <li>Type <code>cd ~/Dane</code> and Return. Then type <code>claude</code> and Return.</li>
+        <li>Say: <strong>Read CLAUDE.md and ask me your first question.</strong></li>
+      </ol>
+      <h3 style="margin-top:20px">While you work</h3>
+      <ul>
+        <li>Claude asks one question at a time. Answer in plain words.</li>
+        <li>When a box pops up asking permission, read it, then Return for Yes or Esc for No. Never pick "don't ask again."</li>
+        <li>Lost? Type <code>wait</code>.</li>
+        <li>A second Terminal tab is Cmd+T. You only use it when Claude asks you to save a key yourself.</li>
+        <li>"You have reached your limit" is normal, not broken. Come back in a few hours.</li>
+        <li>Stuck twice? Send TJ the file <code>notes/ask-tj.md</code>.</li>
+      </ul>
+    </div>
+  </section>
+  <hr class="rule">
+
+  <section id="preflight">
+    <span class="tape">For TJ, one 20-minute call</span>
+    <h2>Pre-flight, before session one</h2>
+    <div class="two">
+      <ol>
+        <li>Claude Pro or Max active on Dane's account.</li>
+        <li><code>xcode-select --install</code>, wait until <code>git --version</code> prints.</li>
+        <li>Claude Code installed and logged in once (<code>claude --version</code> works, then <code>claude</code> opens the browser login).</li>
+        <li>Bitwarden app installed and signed in.</li>
+      </ol>
+      <ol start="5">
+        <li>GitHub account with two-factor; Homebrew; <code>brew install gh</code>; <code>gh auth login</code> done together. It is interactive and cannot run inside Claude, so it is done now and used at Level 1.</li>
+        <li>Create <code>~/Dane</code>, drop in the three files and an empty <code>notes/journal/</code> folder.</li>
+        <li>Show him once: Cmd+T, the permission prompt, Shift+Tab until "plan mode", <code>/clear</code>, and "wait".</li>
+        <li>Dry run first: a fresh macOS user on your own Mac, the same three files, session one as Dane. Hand it over only after the reopen test works for you.</li>
+      </ol>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="inner"><div class="wrap">
+    <p>Written by Gretta for TJ Meaney, reviewed by a council of five advisors, five peer reviewers and a chairman, with every command checked against the official Claude Code and Home Assistant docs on November 9, 2026. <a href="./">Back to the note.</a></p>
+  </div></div>
+</footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var pre = document.getElementById(btn.getAttribute('data-copy'));
+    var text = pre.innerText;
+    function done(ok) { btn.textContent = ok ? 'Copied' : 'Select and copy'; setTimeout(function () { btn.textContent = 'Copy'; }, 1800); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { fallback(); });
+    } else { fallback(); }
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); done(false);
+    }
+  });
+});
+</script>
+</body>
+</html>
